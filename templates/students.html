@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+Students
+{% endblock %}
+
+{% block content %}
+
+<h1>
+    Students 👨‍🎓
+</h1>
+
+<p>
+    Total Students: {{ students|length }}
+</p>
+
+<br>
+
+<a href="/students/add">
+    ➕ Add New Student
+</a>
+
+<br><br>
+
+{% if students %}
+
+    {% for student in students %}
+
+        <div class="card">
+
+            <h2>
+                {{ student.full_name }}
+            </h2>
+
+            <p>
+                <strong>Class:</strong>
+                {{ student.class_name }}
+            </p>
+
+            <p>
+                <strong>Parent Email:</strong>
+                {{ student.parent_email }}
+            </p>
+
+            <br>
+
+            <a href="/students/{{ student.id }}/payment-plan">
+                💰 Create Payment Plan
+            </a>
+
+        </div>
+
+        <br>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="card">
+
+        <h3>
+            No students added yet.
+        </h3>
+
+        <p>
+            Start by adding your first student.
+        </p>
+
+        <a href="/students/add">
+            ➕ Add Student
+        </a>
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

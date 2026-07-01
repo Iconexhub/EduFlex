@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Student
+{% endblock %}
+
+{% block content %}
+
+<h1>Add Student</h1>
+
+<div class="card">
+
+    <form method="POST">
+
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{ form.full_name.label }}<br><br>
+            {{ form.full_name() }}
+        </p>
+
+        <br>
+
+        <p>
+            {{ form.class_name.label }}<br><br>
+            {{ form.class_name() }}
+        </p>
+
+        <br>
+
+        <p>
+            {{ form.parent_email.label }}<br><br>
+            {{ form.parent_email() }}
+        </p>
+
+        <br>
+
+        <p>
+            {{ form.submit() }}
+        </p>
+
+    </form>
+
+</div>
+
+{% endblock %}

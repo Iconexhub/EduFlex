@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}EduFlex{% endblock %}</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f6f8;
+        }
+
+        nav {
+            background-color: #1e3a8a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .flash-message {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: auto;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 12px 20px;
+        }
+
+        input[type="submit"]:hover {
+            opacity: 0.9;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/students">
+            Students
+        </a>
+
+        <a href="/payment-plans">
+            Payment Plans
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="flash-message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+    {% block content %}
+
+    {% endblock %}
+
+</body>
+
+</html>

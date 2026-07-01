@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+Payment Plans
+{% endblock %}
+
+{% block content %}
+
+<h1>
+    Payment Plans 💰
+</h1>
+
+<p>
+    Total Plans: {{ plans|length }}
+</p>
+
+<br>
+
+{% if plans %}
+
+    {% for plan in plans %}
+
+        <div class="card">
+
+            <h2>
+                {{ plan.student.full_name }}
+            </h2>
+
+            <p>
+                <strong>Class:</strong>
+                {{ plan.student.class_name }}
+            </p>
+
+            <hr>
+
+            <p>
+                <strong>Total Fee:</strong>
+                ₦{{ "{:,}".format(plan.total_fee) }}
+            </p>
+
+            <p>
+                <strong>Amount Paid:</strong>
+                ₦{{ "{:,}".format(plan.amount_paid) }}
+            </p>
+
+            <p>
+                <strong>Due Date:</strong>
+                {{ plan.due_date }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+
+                {% if plan.status == "Paid" %}
+                    ✅ Paid
+                {% else %}
+                    ⏳ Pending
+                {% endif %}
+
+            </p>
+
+        </div>
+
+        <br>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="card">
+
+        <h3>
+            No payment plans yet.
+        </h3>
+
+        <p>
+            Create a student and set up their first payment plan.
+        </p>
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

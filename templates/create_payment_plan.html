@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Payment Plan
+{% endblock %}
+
+{% block content %}
+
+<h1>
+    Payment Plan for {{ student.full_name }}
+</h1>
+
+<div class="card">
+
+    <form method="POST">
+
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{ form.total_fee.label }}<br><br>
+            {{ form.total_fee() }}
+        </p>
+
+        <br>
+
+        <p>
+            {{ form.due_date.label }}<br><br>
+            {{ form.due_date() }}
+        </p>
+
+        <br>
+
+        <p>
+            {{ form.submit() }}
+        </p>
+
+    </form>
+
+</div>
+
+{% endblock %}
