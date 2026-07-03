@@ -7,6 +7,7 @@ from forms import PaymentPlanForm
 from models import db
 from models.student import Student
 from models.payment_plan import PaymentPlan
+from services.nomba_service import create_checkout_order
 
 
 payments = Blueprint("payments", __name__)
@@ -42,4 +43,42 @@ def create_payment_plan(student_id):
         "create_payment_plan.html",
         form=form,
         student=student
+    )
+
+@payments.route("/payment/<int:plan_id>/generate-link")
+@login_required
+def generate_payment_link(plan_id):
+
+    plan = (
+        PaymentPlan.query
+        .join(Student)
+        .filter(
+            PaymentPlan.id == plan_id,
+            Student.user_id == current_user.id
+        )
+        .first_or_404()
+    )
+
+    result = create_checkout_order(
+        amount=plan.total_fee,
+        customer_email=plan.student.parent_email,
+        callback_url="https://google.com"
+    )
+
+    if result.get("code") != "00":
+
+        flash("Failed to generate payment link.")
+
+        return redirect(
+            url_for("dashboard.payment_dashboard")
+        )
+
+    plan.nomba_order_reference = (
+        result["data"]["orderReference"]
+    )
+
+    db.session.commit()
+
+    return redirect(
+        result["data"]["checkoutLink"]
     )
