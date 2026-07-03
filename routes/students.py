@@ -33,10 +33,15 @@ def add_student():
 
         return redirect(url_for("students.list_students"))
 
+    # DEBUG: Print validation errors if form submission fails
+    if form.is_submitted():
+        print("FORM ERRORS:", form.errors)
+
     return render_template(
         "add_student.html",
         form=form
     )
+
 
 @students.route("/students")
 @login_required
