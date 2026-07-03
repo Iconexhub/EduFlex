@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, flash
 
 from forms import RegistrationForm, LoginForm
 from models import db
@@ -19,11 +19,12 @@ def register():
     if form.validate_on_submit():
 
         existing_user = User.query.filter_by(
-        email=form.email.data
+            email=form.email.data
         ).first()
 
         if existing_user:
-            return "This email is already registered."
+            flash("This email is already registered.", "error")
+            return redirect(url_for("auth.register"))
 
         hashed_password = generate_password_hash(
             form.password.data
@@ -38,12 +39,18 @@ def register():
         db.session.add(user)
         db.session.commit()
 
+        # Automatically log in after registration
+        login_user(user)
+
+        flash("Registration successful!", "success")
+
         return redirect(url_for("home"))
 
     return render_template(
         "register.html",
         form=form
     )
+
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
@@ -63,19 +70,24 @@ def login():
 
             login_user(user)
 
+            flash("Logged in successfully!", "success")
+
             return redirect(url_for("home"))
 
-        return "Invalid email or password."
+        flash("Invalid email or password.", "error")
 
     return render_template(
         "login.html",
         form=form
     )
 
+
 @auth.route("/logout")
 @login_required
 def logout():
 
     logout_user()
+
+    flash("Logged out successfully.", "success")
 
     return redirect(url_for("home"))

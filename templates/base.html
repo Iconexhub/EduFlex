@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
     <title>{% block title %}EduFlex{% endblock %}</title>
 
     <style>
@@ -45,6 +46,15 @@
             font-weight: bold;
         }
 
+        .error-message {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
         input {
             width: 100%;
             padding: 10px;
@@ -77,27 +87,41 @@
 
         <a href="/">Home</a>
 
-        <a href="/students">
-            Students
-        </a>
+        {% if current_user.is_authenticated %}
 
-        <a href="/payment-plans">
-            Payment Plans
-        </a>
+            <a href="/students">
+                Students
+            </a>
 
-        <a href="/logout">
-            Logout
-        </a>
+            <a href="/payment-plans">
+                Payment Plans
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="/login">
+                Login
+            </a>
+
+            <a href="/register">
+                Register
+            </a>
+
+        {% endif %}
 
     </nav>
 
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
 
         {% if messages %}
 
-            {% for message in messages %}
+            {% for category, message in messages %}
 
-                <div class="flash-message">
+                <div class="{% if category == 'error' %}error-message{% else %}flash-message{% endif %}">
                     {{ message }}
                 </div>
 
@@ -108,7 +132,6 @@
     {% endwith %}
 
     {% block content %}
-
     {% endblock %}
 
 </body>
