@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify
 
 from flask_login import login_required, current_user
 
@@ -82,3 +82,17 @@ def generate_payment_link(plan_id):
     return redirect(
         result["data"]["checkoutLink"]
     )
+
+@payments.route("/webhook/nomba", methods=["POST"])
+def nomba_webhook():
+
+    signature = request.headers.get("nomba-signature")
+
+    print("\n========== NOMBA WEBHOOK ==========")
+    print("Signature:", signature)
+    print("Data:", request.json)
+    print("===================================\n")
+
+    return jsonify({
+        "success": True
+    }), 200
